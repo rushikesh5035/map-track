@@ -45,9 +45,17 @@ node app.js
 **4. Access the application:**
 Open your browser and navigate to http://localhost:3000.
 
+---
+
 ## **Usage**
 
 1. Open the application in multiple browsers or devices.
 2. Allow location access when prompted by the browser.
 3. Observe the real-time movement of markers on the map.
 4. Disconnect a device to see its marker removed from the map.
+
+## **Screenshots**
+
+![alt text](<Screenshot 2025-02-18 105240.png>)
+
+![alt text](<Screenshot 2025-02-18 105224.png>)
