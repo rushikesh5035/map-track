@@ -56,6 +56,6 @@ Open your browser and navigate to http://localhost:3000.
 
 ## **Screenshots**
 
-![alt text](<Screenshot 2025-02-18 105240.png>)
+![alt text](one_maker.png)
 
-![alt text](<Screenshot 2025-02-18 105224.png>)
+![alt text](two_makers.png)
