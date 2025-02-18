@@ -1,40 +1,47 @@
 const socket = io();
 
+// Watch and emit user's location
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
     (position) => {
+      console.log(position);
+
       const { latitude, longitude } = position.coords;
-      // console.log("Sending location:", latitude, longitude);
-      socket.emit("send-location", { latitude, longitude });
+      socket.emit("send_location", { latitude, longitude });
     },
     (error) => {
-      console.error("Geolocation error:", error);
+      console.error("Unable to get location", error);
     },
-    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    {
+      enableHighAccuracy: true,
+      timeout: 3000,
+      maximumAge: 0,
+    }
   );
 }
 
+// Initialize Leaflet map
 const map = L.map("map").setView([0, 0], 15);
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "OpenStreetMap",
-}).addTo(map);
+// Add OpenStreetMap tiles
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-const marker = {};
+// Object to keep track of markers for each user
+const markers = {};
 
-socket.on("receive-location", (data) => {
+socket.on("receive_location", (data) => {
   const { id, latitude, longitude } = data;
-  map.setView([latitude.longitude], 16);
-  if (marker[id]) {
-    marker[id].setLatLng([latitude, longitude]);
+  map.setView([latitude, longitude]);
+  if (markers[id]) {
+    markers[id].setLatLng([latitude, longitude]);
   } else {
-    marker[id] = L.marker([latitude, longitude]).addTo(map);
+    markers[id] = L.marker([latitude, longitude]).addTo(map);
   }
 });
 
-socket.on("user-disconnected", (id) => {
-  if (marker[id]) {
-    map.removeLayer(marker[id]);
-    delete marker[id];
+socket.on("user_disconnected", (id) => {
+  if (markers[id]) {
+    map.removeLayer(markers[id]);
+    delete markers[id];
   }
 });
